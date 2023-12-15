@@ -25,11 +25,11 @@ if __name__ == "__main__":
     parser.add_argument('-u', '--out_fmt', type=str, default='dcd',
         choices=['numpy', 'dcd'],
         help='Output format for the file storing xyz coordinates.')
-    parser.add_argument('-n', '--n_samples', type=int, default=10000,
+    parser.add_argument('-n', '--n_samples', type=int, default=1000,
         help='Number of samples to generate.')
     parser.add_argument('-t', '--n_steps', type=int, default=100,
         help='Number of diffusion steps (min=1, max=1000).')
-    parser.add_argument('-b', '--batch_size', type=int, default=256,
+    parser.add_argument('-b', '--batch_size', type=int, default=250,
         help='Batch size for sampling.')
     parser.add_argument('-a', '--all_atom', action='store_true',
         help='Convert the C-alpha conformations to all-atom via cg2all.')

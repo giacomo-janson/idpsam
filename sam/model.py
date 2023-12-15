@@ -46,8 +46,10 @@ class SAM:
     def __init__(self,
         config_fp: str,
         device: str = "cpu",
+        weights_parent_path: str = None,
         verbose: bool = False):
 
+        self.weights_parent_path = weights_parent_path
         self.verbose = verbose
 
         if self.verbose:
@@ -81,20 +83,20 @@ class SAM:
         #
 
         # Network.
+        eps_fp = self._get_weights_path(
+            self.model_cfg["latent_network"]["weights"])
         if self.verbose:
-            print("- Loading epsilon network from: {}".format(
-                self.model_cfg["latent_network"]["weights"]))
+            print(f"- Loading epsilon network from: {eps_fp}.")
         self.eps_model = get_eps_network(self.model_cfg)
-        self.eps_model.load_state_dict(
-            torch.load(self.model_cfg["latent_network"]["weights"],
-                       **map_location_args))
+        self.eps_model.load_state_dict(torch.load(eps_fp, **map_location_args))
         self.eps_model.to(self.device)
         self.eps_ema = None
 
         # Load the standard scaler for the encodings, if necessary.
         if self.model_cfg["generative_model"]["use_enc_std_scaler"]:
-            enc_std_scaler = torch.load(
+            enc_scaler_fp = self._get_weights_path(
                 self.model_cfg["generative_model"]["enc_std_scaler_fp"])
+            enc_std_scaler = torch.load(enc_scaler_fp)
             enc_std_scaler["u"] = enc_std_scaler["u"].to(dtype=torch.float,
                                                          device=self.device)
             enc_std_scaler["s"] = enc_std_scaler["s"].to(dtype=torch.float,
@@ -112,22 +114,27 @@ class SAM:
         # Load the decoder.
         #
 
+        dec_fp = self._get_weights_path(self.model_cfg["decoder"]["weights"])
         if self.verbose:
-            print("- Loading decoder network from: {}.".format(
-                self.model_cfg["decoder"]["weights"]))
+            print(f"- Loading decoder network from: {dec_fp}.")
         self.decoder = get_decoder(self.model_cfg)
-        self.decoder.load_state_dict(
-            torch.load(self.model_cfg["decoder"]["weights"],
-                       **map_location_args))
+        self.decoder.load_state_dict( torch.load(dec_fp, **map_location_args))
         self.decoder.to(self.device)
     
+
+    def _get_weights_path(self, path):
+        if self.weights_parent_path is None:
+            return path
+        else:
+            return os.path.join(self.weights_parent_path, path)
+
 
     def sample(self,
         seq: str,
         n_samples: int = 1000,
         n_steps: int = 100,
         batch_size_eps: int = 256,
-        batch_size_dec: int = 256,
+        batch_size_dec: int = None,
         prot_name: str = "protein",
         return_enc: bool = False,
         out_type: str = "numpy"):
@@ -151,18 +158,22 @@ class SAM:
         """
 
         # Generate encodings.
-        enc_gen, time_ddpm = self.generate(seq=seq,
-                                           n_samples=n_samples,
-                                           n_steps=n_steps,
-                                           batch_size=batch_size_eps,
-                                           prot_name=prot_name,
-                                           return_time=True)
-        # Decode to xyz coordinates.              
-        xyz_gen, time_dec = self.decode(enc=enc_gen,
-                                        seq=seq,
-                                        batch_size=batch_size_dec,
-                                        prot_name=prot_name,
-                                        return_time=True)
+        enc_gen, time_ddpm = self.generate(
+            seq=seq,
+            n_samples=n_samples,
+            n_steps=n_steps,
+            batch_size=batch_size_eps,
+            prot_name=prot_name,
+            return_time=True)
+
+        # Decode to xyz coordinates.
+        xyz_gen, time_dec = self.decode(
+            enc=enc_gen,
+            seq=seq,
+            batch_size=batch_size_dec if batch_size_dec is not None \
+                       else batch_size_eps,
+            prot_name=prot_name,
+            return_time=True)
 
         # Return the output.
         out = {"seq": seq,

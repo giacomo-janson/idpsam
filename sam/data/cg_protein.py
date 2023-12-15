@@ -29,8 +29,9 @@ from sam.data.sequences import aa_list, aa_one_letter
 
 # Classes derived from these namedtuples will be used to instantiate the objects
 # returned by the .get() methods of the dataset classes in this module.
+staticdata_xyz_keys = ["x", "a", "ae", "r", "x_t"]
 _StaticData = namedtuple("StaticData",
-                         ["x", "a", "ae", "r", "x_t"],
+                         staticdata_xyz_keys,
                          defaults=[0, 0, 0, 0, 0])
 staticdata_enc_keys = ["z", "a", "ae", "r", "z_t"]
 _StaticDataEnc = namedtuple("StaticDataEnc",
