@@ -430,7 +430,7 @@ class EpsTransformer(nn.Module):
         attention_type: str = "transformer",
         embed_dim: int = 256,
         d_model: int = None,
-        num_heads: int = 20,
+        num_heads: int = 16,
         mlp_dim: int = None,
         dropout: float = None,
         norm_eps: float = 1e-5,

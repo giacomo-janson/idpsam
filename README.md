@@ -16,7 +16,7 @@ We recommend to install and run this package in a new [Conda environment](https:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/giacomo-janson/sam.git
+   git clone https://github.com/giacomo-janson/idpsam.git
    ```
    and go into the root directory of the repository.
 2. Install the dedicated conda environment and dependencies:

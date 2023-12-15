@@ -4,7 +4,7 @@
     "bead_type": "ca",
     "encoding_dim": 16,
     "use_enc_std_scaler": true,
-    "enc_std_scaler_fp": "weights/enc_std_scaler.pt",
+    "enc_std_scaler_fp": "weights/v1.0/enc_std_scaler.pt",
     "max_len": 60
   },
 
@@ -33,7 +33,7 @@
     "dmap_embed_type": "rbf",
     "use_dmap_mlp": true,
     "use_torsions": true,
-    "weights": "weights/nn.enc.pt"
+    "weights": "weights/v1.0/nn.enc.pt"
   },
 
   "decoder": {
@@ -55,7 +55,7 @@
     "use_bias_2d": true,
     "pos_embed_r": 32,
     "embed_inject_mode": null,
-    "weights": "weights/nn.dec.pt"
+    "weights": "weights/v1.0/nn.dec.pt"
   },
 
   "latent_generative_model": {
@@ -106,6 +106,6 @@
       "beta": 0.9999,
       "update_after_step": 100,
       "update_every": 10},
-    "weights": "weights/nn.eps.pt"
+    "weights": "weights/v1.0/nn.eps.pt"
   }
 }
