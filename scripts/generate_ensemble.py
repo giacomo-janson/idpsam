@@ -35,7 +35,7 @@ if __name__ == "__main__":
         help='Convert the C-alpha conformations to all-atom via cg2all.')
     parser.add_argument('-d', '--device', type=str, default='cpu',
         choices=['cpu', 'cuda'], help='PyTorch device.')
-    parser.add_argument('--cg2all_device', type=str, default=None,
+    parser.add_argument('--cg2all_device', type=str, default='cpu',
         choices=['cpu', 'cuda'],
         help='PyTorch device for cg2all. If CUDA is installed but DGL can not'
             ' find it, use \'cpu\' here.')
@@ -49,8 +49,10 @@ if __name__ == "__main__":
 
     if args.all_atom:
         if not has_cg2all:
-            raise ImportError("The cg2all library is not installed. Can not"
-                              " reconstruct an all-atom ensemble.")
+            raise ImportError(
+                "The cg2all library is not installed. Can not reconstruct an"
+                " all-atom ensemble. For installing cg2all go here:"
+                " https://github.com/huhlim/cg2all")
         if args.out_fmt != "dcd":
             raise ValueError(
                 f"The --out_fmt can only be in {repr(allowed_aa_out_fmt)} when"
