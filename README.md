@@ -36,7 +36,7 @@ We recommend to install and run this package in a new [Conda environment](https:
    ```
    this is the command for performing a [CPU-only installation](https://github.com/huhlim/cg2all/#installation) of cg2all. You can also attempt the GPU installation, which involves more steps. If you can't install cg2all with GPU support, the CPU installation is still good for idpSAM. This is because for short peptides cg2all is reasonably fast when running on a CPU. This is the setup we typically use for in-house studies.
 ## Run on the cloud
-If you want to quickly use idpSAM on the cloud (no installations needed on your system), we have a [idpSAM Colab notebook](running-remotely).
+If you want to quickly use idpSAM on the cloud (no installations needed on your system), we have a [idpSAM Colab notebook](#running-remotely).
 
 # Usage
 ## Generate conformational ensembles
