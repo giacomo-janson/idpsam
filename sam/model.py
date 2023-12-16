@@ -126,7 +126,9 @@ class SAM:
         if self.weights_parent_path is None:
             return path
         else:
-            return os.path.join(self.weights_parent_path, path)
+            b = pathlib.Path(self.weights_parent_path)
+            p = pathlib.Path(path)
+            return str(b / p)
 
 
     def sample(self,
@@ -225,6 +227,8 @@ class SAM:
             dataset=enc_dataset, batch_size=batch_size)
 
         # Actually generate an encoded ensemble.
+        if self.verbose:
+            print(f"- Generating...")
         encoding_dim = self.model_cfg["generative_model"]["encoding_dim"]
         sample_args = {"n_steps": n_steps}
 
@@ -246,6 +250,9 @@ class SAM:
                                                                   n_samples))
                 if tot_graphs >= n_samples:
                     break
+
+        if self.verbose:
+            print(f"- Done.")
 
         # Prepare the output encodings.
         enc_gen = torch.cat(enc_gen, axis=0)[:n_samples]
@@ -318,6 +325,9 @@ class SAM:
                     print("- Decoded %s graphs of %s" % (tot_graphs, n_samples))
                 if tot_graphs >= n_samples:
                     break
+        
+        if self.verbose:
+            print(f"- Done.")
 
         # Prepare the output xyz coordinates.
         xyz_gen = torch.cat(xyz_gen, axis=0)[:n_samples]
