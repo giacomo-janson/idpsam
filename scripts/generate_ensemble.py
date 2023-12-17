@@ -1,6 +1,7 @@
 import os
 import pathlib
 import argparse
+import re
 import numpy as np
 from sam.model import SAM
 try:
@@ -44,9 +45,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
 
-    # Check input.
-    allowed_aa_out_fmt = ("dcd", )
+    #---------------
+    # Check input. -
+    #---------------
 
+    if not re.match(r'^[QWERTYIPASDFGHKLCVNM]*$', args.seq):
+        raise ValueError(
+            "The input sequence can contain only standard amino acid letters.")
+
+    allowed_aa_out_fmt = ("dcd", )
     if args.all_atom:
         if not has_cg2all:
             raise ImportError(
@@ -67,6 +74,10 @@ if __name__ == "__main__":
         if args.cg2all_device is None:
             args.cg2all_device = args.device
 
+
+    #--------------
+    # Run idpSAM. -
+    #--------------
 
     # Initialize the idpSAM model.
     model = SAM(config_fp=args.config_fp,
