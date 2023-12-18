@@ -1,3 +1,6 @@
+# Configuration for the idpSAM models presented in the article:
+# "Transferable deep generative modeling of intrinsically disordered protein conformations".
+
 generative_model:
   data_type: cg_protein
   bead_type: ca

@@ -32,6 +32,10 @@ if __name__ == "__main__":
         help='Number of diffusion steps (min=1, max=1000).')
     parser.add_argument('-b', '--batch_size', type=int, default=250,
         help='Batch size for sampling.')
+    parser.add_argument('--cg2all_batch_size', type=int, default=None,
+        help='cg2all batch size for all-atom reconstruction.'
+             ' Only takes effect when using the --all_atom option.'
+             ' If not provided, it will be equal to --batch_size.')
     parser.add_argument('-a', '--all_atom', action='store_true',
         help='Convert the C-alpha conformations to all-atom via cg2all.')
     parser.add_argument('-d', '--device', type=str, default='cpu',
@@ -58,17 +62,19 @@ if __name__ == "__main__":
         if not has_cg2all:
             raise ImportError(
                 "The cg2all library is not installed. Can not reconstruct an"
-                " all-atom ensemble. For installing cg2all go here:"
-                " https://github.com/huhlim/cg2all")
+                " all-atom ensemble. For cg2all installation instructions go"
+                " here: https://github.com/huhlim/cg2all")
         if args.out_fmt != "dcd":
             raise ValueError(
                 f"The --out_fmt can only be in {repr(allowed_aa_out_fmt)} when"
                 " using --all_atom.")
-        if args.n_samples < args.batch_size or \
-           args.n_samples % args.batch_size != 0:
+        if args.cg2all_batch_size is None:
+            args.cg2all_batch_size = args.batch_size
+        if args.n_samples < args.cg2all_batch_size or \
+           args.n_samples % args.cg2all_batch_size != 0:
             raise ValueError(
-                "The all-atom conversion script can only work when --batch_size"
-                f" is an exact divisor of --n_samples. You provided"
+                "The all-atom conversion script can only work when the cg2all"
+                f" batch size is an exact divisor of --n_samples. You provided"
                 f" {args.batch_size} and {args.n_samples}. Please manually"
                 " adjust the values.")
         if args.cg2all_device is None:
@@ -103,5 +109,5 @@ if __name__ == "__main__":
         model.cg2all(ca_pdb_fp=save["ca_pdb"],
                      ca_traj_fp=save["ca_dcd"],
                      out_path=args.out_path,
-                     batch_size=args.batch_size,
+                     batch_size=args.cg2all_batch_size,
                      device=args.cg2all_device)
