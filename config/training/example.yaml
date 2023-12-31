@@ -1,6 +1,8 @@
-# Configuration file for the idpSAM models presented in the article:
-# "Transferable deep generative modeling of intrinsically disordered protein conformations".
+# Template configuration file for training a custom SAM model.
+# The hyper-parameters of the models (AE and DDPM) are the sam of the idpSAM
+# model.
 
+# Generative model.
 generative_model:
   data_type: cg_protein
   bead_type: ca
@@ -8,6 +10,35 @@ generative_model:
   use_enc_std_scaler: true
   max_len: 60
 
+
+# Training parameters.
+training:
+  out_dp: null
+  # Data for training an autoencoder.
+  ae:
+    xyz_dp: null
+    train: null
+      proteins: null
+      n_frames: 5000
+      n_trajs: null
+    val:
+      proteins: null
+      n_frames: 2500
+      n_trajs: null
+  # Data for training a generative model.
+  gm:
+    enc_dp: null
+    train: null
+      proteins: null
+      n_frames: 5000
+      n_trajs: null
+    val:
+      proteins: null
+      n_frames: 2500
+      n_trajs: null
+
+
+# Encoder neural network.
 encoder:
   arch: enc_ca_trf
   num_layers: 5
@@ -33,9 +64,11 @@ encoder:
   dmap_embed_type: rbf
   use_dmap_mlp: true
   use_torsions: true
-  weights: ./weights/v1.0/nn.enc.pt
-  std_scaler_fp: ./weights/v1.0/enc_std_scaler.pt
+  weights: ./data/training/weights/nn.enc.pt
+  std_scaler_fp: ./data/training/weights/enc_std_scaler.pt
 
+
+# Decoder neural network.
 decoder:
   type: deterministic
   arch: dec_ca_trf
@@ -55,8 +88,10 @@ decoder:
   use_bias_2d: true
   pos_embed_r: 32
   embed_inject_mode: null
-  weights: ./weights/v1.0/nn.dec.pt
+  weights: ./data/training/weights/nn.dec.pt
 
+
+# Generative model.
 latent_generative_model:
   type: diffusers_dm
   sched_params:
@@ -69,6 +104,8 @@ latent_generative_model:
     prediction_type: epsilon
   loss: l2
 
+
+# Neural network(s) used in the generative model.
 latent_network:
   arch: eps_trf
   num_layers: 16
@@ -97,10 +134,4 @@ latent_network:
   embed_inject_mode: adanorm
   input_inject_mode: add
   input_inject_pos: out
-  _use_fp16: true
-  _use_ema: true
-  _ema_params: 
-    beta: 0.9999
-    update_after_step: 100
-    update_every: 10
-  weights: ./weights/v1.0/nn.eps.pt
+  weights: ./data/training/weights/nn.eps.pt

@@ -95,7 +95,7 @@ class SAM:
         # Load the standard scaler for the encodings, if necessary.
         if self.model_cfg["generative_model"]["use_enc_std_scaler"]:
             enc_scaler_fp = self._get_weights_path(
-                self.model_cfg["generative_model"]["enc_std_scaler_fp"])
+                self.model_cfg["encoder"]["std_scaler_fp"])
             enc_std_scaler = torch.load(enc_scaler_fp)
             enc_std_scaler["u"] = enc_std_scaler["u"].to(dtype=torch.float,
                                                          device=self.device)
