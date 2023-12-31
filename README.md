@@ -7,7 +7,6 @@ Repository implementing [idpSAM](https://todo.com) in [PyTorch](https://pytorch.
 This repository can be used for the following applications (see below for more information):
 * Generate Cα ensembles with a pre-trained idpSAM model.
 * Generate all-atom ensembles with a pre-trained idpSAM model and the [cg2all model](https://github.com/huhlim/cg2all) for all-atom reconstruction.
-* Train a SAM model on your own dataset of protein conformations.
 
 # Installation
 
@@ -65,9 +64,6 @@ You can easily generate a Cα (and optionally all-atom) ensemble for a custom pe
 Launch the notebook using the link below:
 
 [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/giacomo-janson/idpsam/blob/main/notebooks/idpsam_experiments.ipynb)
-
-## Train a new SAM model with a custom Cα dataset
-Using the scripts in the `scripts/training` directory of this repository you can train (on your local system) a SAM model on your own dataset of protein conformations. For more information and requirements, follow the guide at `scripts/training/README.md`.
 
 # Updates
 TODO.
