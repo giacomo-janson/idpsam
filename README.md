@@ -30,7 +30,7 @@ We recommend to install and run this package in a new [Conda environment](https:
    ```bash
    pip install -e .
    ```
-5. Optional, only if you want to perform all-atom reconstruction when using the idpSAM inference script. Install the [cg2all package](https://github.com/huhlim/cg2all):
+5. Optional, only if you want to perform all-atom reconstruction when using the idpSAM inference script. Install the [cg2all package](https://github.com/huhlim/cg2all) inside the `sam` environment created above:
    ```bash
    pip install git+http://github.com/huhlim/cg2all
    ```
@@ -66,7 +66,7 @@ Launch the notebook using the link below:
 [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/giacomo-janson/idpsam/blob/main/notebooks/idpsam_experiments.ipynb)
 
 # Updates
-TODO.
+* 31/12/2023: initial release.
 
 # References
 TODO.
