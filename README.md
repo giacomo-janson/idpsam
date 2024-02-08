@@ -69,4 +69,4 @@ Launch the notebook using the link below:
 * 31/12/2023: initial release.
 
 # References
-TODO.
+Janson G and Feig M. Transferable deep generative modeling of intrinsically disordered protein conformations. BioRxiv (2024).
