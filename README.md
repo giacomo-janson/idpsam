@@ -70,3 +70,5 @@ Launch the notebook using the link below:
 
 # References
 Janson G and Feig M. Transferable deep generative modeling of intrinsically disordered protein conformations. BioRxiv (2024).
+
+[![DOI](https://zenodo.org/badge/731574642.svg)](https://zenodo.org/doi/10.5281/zenodo.10636298)
